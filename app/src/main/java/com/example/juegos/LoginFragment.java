@@ -6,9 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class LoginFragment extends Fragment {
     @Override
@@ -18,12 +17,16 @@ public class LoginFragment extends Fragment {
 
         Button login = rootView.findViewById(R.id.loginButton);
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { //TODO hacer el login funcional
-                //cambiar el fragment al que lista los juegos
-            }
+
+        login.setOnClickListener(v -> {
+            // Use the activity's FragmentManager to replace the fragment
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.login_fragment, new GameFragment())
+                    .addToBackStack(null)
+                    .commit();
         });
         return rootView;
     }
+
+
 }
