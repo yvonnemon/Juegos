@@ -1,31 +1,38 @@
 package com.example.juegos;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+//Menu para elegir el juego
 public class GameFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.game_fragment, container, false);
 
-//        View rootView = inflater.inflate(R.layout.game_fragment, container, false);
-//
-//        Button login = rootView.findViewById(R.id.loginButton);
-//
-//        login.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-//        return rootView;
-        return null;
+       return rootView;
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Button login = view.findViewById(R.id.maingame);
+
+        //on click, cambia de actividad
+        login.setOnClickListener(v -> {
+            // Create an intent to navigate to the new activity
+            Intent intent = new Intent(requireActivity(), MainGameActivity.class);
+            startActivity(intent);
+        });
     }
 }

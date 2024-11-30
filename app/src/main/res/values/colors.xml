@@ -5,4 +5,21 @@
     <color name="pink">#FD00FA</color>
     <color name="yellow">#FFEB3B</color>
     <color name="red">#E91E63</color>
+    <color name="evoker">#095256</color>
+    <color name="cian">#087F8C</color>
+    <color name="azulito">#5AAA95</color>
+    <color name="esparrago">#86A873</color>
+    <color name="huevo">#BB9F06</color>
+    <color name="celesteclaro">#D1FAFF</color>
+    <color name="celeste">#9BD1E5</color>
+    <color name="azul">#6A8EAE</color>
+    <color name="jade">#57A773</color>
+    <color name="verde">#157145</color>
+    <color name="verdetierra">#35524A</color>
+    <color name="grisverdoso">#627C85</color>
+    <color name="grisazul">#779CAB</color>
+    <color name="azulfancy">#A2E8DD</color>
+    <color name="monk">#32DE8A</color>
+
+
 </resources>
