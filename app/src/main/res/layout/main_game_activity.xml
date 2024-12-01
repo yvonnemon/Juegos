@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/home"
-    tools:context=".MainGameActivity">
+    tools:context=".MainGameActivity"
+    android:background="@color/azulfancy">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
@@ -19,11 +20,12 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:backgroundTint="@color/evoker"/>
 
     <FrameLayout
-        android:layout_width="333dp"
-        android:layout_height="558dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:columnCount="4"
-            android:background="@color/azulfancy"
+            android:padding="3dp"
+            android:background="@color/azulito"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,8 +53,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
                 android:textSize="20sp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -62,12 +65,11 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:tag="square2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -79,12 +81,11 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:tag="square3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -96,12 +97,11 @@
 
             <TextView
                 android:id="@+id/textView4"
-                android:tag="square4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -113,12 +113,11 @@
 
             <TextView
                 android:id="@+id/textView5"
-                android:tag="square5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -130,12 +129,11 @@
 
             <TextView
                 android:id="@+id/textView6"
-                android:tag="square6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -147,12 +145,11 @@
 
             <TextView
                 android:id="@+id/textView7"
-                android:tag="square7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -164,12 +161,11 @@
 
             <TextView
                 android:id="@+id/textView8"
-                android:tag="square8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -181,12 +177,11 @@
 
             <TextView
                 android:id="@+id/textView9"
-                android:tag="square9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -198,12 +193,11 @@
 
             <TextView
                 android:id="@+id/textView10"
-                android:tag="square10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -215,12 +209,11 @@
 
             <TextView
                 android:id="@+id/textView11"
-                android:tag="square11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -232,12 +225,11 @@
 
             <TextView
                 android:id="@+id/textView12"
-                android:tag="square12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -249,12 +241,11 @@
 
             <TextView
                 android:id="@+id/textView13"
-                android:tag="square13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -266,12 +257,11 @@
 
             <TextView
                 android:id="@+id/textView14"
-                android:tag="square14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -283,12 +273,11 @@
 
             <TextView
                 android:id="@+id/textView15"
-                android:tag="square15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"
@@ -300,12 +289,11 @@
 
             <TextView
                 android:id="@+id/textView16"
-                android:tag="square16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:width="60dp"
-                android:height="60dp"
+                android:width="75dp"
+                android:height="75dp"
                 android:gravity="center"
                 android:clickable="false"
                 android:focusable="false"

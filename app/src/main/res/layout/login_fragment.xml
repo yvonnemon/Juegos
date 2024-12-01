@@ -24,7 +24,7 @@
             android:inputType="text"
             android:padding="10dp"
             android:hint="Username"
-            android:backgroundTint="@color/pink"/>
+            android:backgroundTint="@color/evoker"/>
 
         <EditText
             android:id="@+id/editTextTextPassword"
@@ -35,18 +35,20 @@
             android:inputType="textPassword"
             android:hint="Password"
             android:layout_marginBottom="60dp"
-            android:backgroundTint="@color/yellow"/>
+            android:backgroundTint="@color/evoker"/>
 
         <Button
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/cian"
             android:text="Log in" />
 
         <Button
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/cian"
             android:text="Register" />
 
     </LinearLayout>
