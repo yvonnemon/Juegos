@@ -20,6 +20,17 @@
     <color name="grisazul">#779CAB</color>
     <color name="azulfancy">#A2E8DD</color>
     <color name="monk">#32DE8A</color>
+<!--    colores para los cuadritos del 2048-->
+    <color name="game4">#C1F3F5</color>
+    <color name="game8">#B1E8EA</color>
+    <color name="game16">#A1DDDF</color>
+    <color name="game32">#91D3D5</color>
+    <color name="game64">#81C9CA</color>
+    <color name="game128">#71BFBF</color>
+    <color name="game256">#61B5B5</color>
+    <color name="game512">#51AAAA</color>
+    <color name="game1024">#419F9F</color>
+    <color name="game2048">#399595</color>
 
 
 </resources>
