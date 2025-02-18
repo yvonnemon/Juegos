@@ -1,5 +1,8 @@
 package com.example.juegos;
 
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -8,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -17,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-//esta es la de los juegos
+//2048
 
 public class MainGameActivity extends AppCompatActivity {
     private GestureDetector gestureDetector;
@@ -268,8 +272,11 @@ public class MainGameActivity extends AppCompatActivity {
                 TextView textView = findViewById(resId);
 
                 if (textView != null) {
+                    textView.setBackgroundTintList(setTileColor(grid[i][j]));
+                    textView.setTypeface(null, Typeface.BOLD);
                     if (grid[i][j] != 0) {
                         textView.setText(String.valueOf(grid[i][j]));
+
                     } else {
                         textView.setText(""); // Clear the TextView for zero values
                     }
@@ -278,6 +285,58 @@ public class MainGameActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private ColorStateList setTileColor(int tileNumber){
+        switch(tileNumber) {
+            case 2:
+                return getResources().getColorStateList(R.color.celesteclaro, null);
+
+            case 4:
+                return getResources().getColorStateList(R.color.verdetierra, null);
+               // return getResources().getColorStateList(R.color.game4, null);
+
+            case 8:
+                return getResources().getColorStateList(R.color.azul, null);
+                //return getResources().getColorStateList(R.color.game8, null);
+
+            case 16:
+                return getResources().getColorStateList(R.color.grisazul, null);
+                //return getResources().getColorStateList(R.color.game16, null);
+
+            case 32:
+                return getResources().getColorStateList(R.color.verde, null);
+                //return getResources().getColorStateList(R.color.game32, null);
+
+            case 64:
+                return getResources().getColorStateList(R.color.jade, null);
+                //return getResources().getColorStateList(R.color.game64, null);
+
+            case 128:
+                return getResources().getColorStateList(R.color.red, null);
+                //return getResources().getColorStateList(R.color.game128, null);
+
+            case 256:
+                return getResources().getColorStateList(R.color.huevo, null);
+                //return getResources().getColorStateList(R.color.game256, null);
+
+            case 512:
+                return getResources().getColorStateList(R.color.esparrago, null);
+                //return getResources().getColorStateList(R.color.game512, null);
+
+            case 1024:
+                //return getResources().getColorStateList(R.color.game1024, null);
+                return getResources().getColorStateList(R.color.pink, null);
+
+            case 2048:
+                return getResources().getColorStateList(R.color.cian, null);
+                //return getResources().getColorStateList(R.color.game2048, null);
+
+            default:
+                return getResources().getColorStateList(R.color.celesteclaro, null);
+        }
+
+       // return getResources().getColorStateList(R.color.pink, null);
     }
 
 }
