@@ -20,19 +20,19 @@
         android:backgroundTint="@color/cian"/>
 
     <Button
-        android:id="@+id/ahorcado"
+        android:id="@+id/hanged"
         android:layout_width="245dp"
         android:layout_height="45dp"
         android:text="Ahorcado"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cuatroenraya"
+        app:layout_constraintTop_toBottomOf="@+id/linefour"
         app:layout_constraintVertical_bias="0.0"
         android:backgroundTint="@color/cian"/>
 
     <Button
-        android:id="@+id/cuatroenraya"
+        android:id="@+id/linefour"
         android:layout_width="245dp"
         android:layout_height="45dp"
         android:text="4 en raya"

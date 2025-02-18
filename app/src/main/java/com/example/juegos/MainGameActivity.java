@@ -293,43 +293,43 @@ public class MainGameActivity extends AppCompatActivity {
                 return getResources().getColorStateList(R.color.celesteclaro, null);
 
             case 4:
-                return getResources().getColorStateList(R.color.verdetierra, null);
+                return getResources().getColorStateList(R.color.game4, null);
                // return getResources().getColorStateList(R.color.game4, null);
 
             case 8:
-                return getResources().getColorStateList(R.color.azul, null);
+                return getResources().getColorStateList(R.color.game8, null);
                 //return getResources().getColorStateList(R.color.game8, null);
 
             case 16:
-                return getResources().getColorStateList(R.color.grisazul, null);
+                return getResources().getColorStateList(R.color.game16, null);
                 //return getResources().getColorStateList(R.color.game16, null);
 
             case 32:
-                return getResources().getColorStateList(R.color.verde, null);
+                return getResources().getColorStateList(R.color.game32, null);
                 //return getResources().getColorStateList(R.color.game32, null);
 
             case 64:
-                return getResources().getColorStateList(R.color.jade, null);
+                return getResources().getColorStateList(R.color.game64, null);
                 //return getResources().getColorStateList(R.color.game64, null);
 
             case 128:
-                return getResources().getColorStateList(R.color.red, null);
+                return getResources().getColorStateList(R.color.game128, null);
                 //return getResources().getColorStateList(R.color.game128, null);
 
             case 256:
-                return getResources().getColorStateList(R.color.huevo, null);
+                return getResources().getColorStateList(R.color.game256, null);
                 //return getResources().getColorStateList(R.color.game256, null);
 
             case 512:
-                return getResources().getColorStateList(R.color.esparrago, null);
+                return getResources().getColorStateList(R.color.game512, null);
                 //return getResources().getColorStateList(R.color.game512, null);
 
             case 1024:
                 //return getResources().getColorStateList(R.color.game1024, null);
-                return getResources().getColorStateList(R.color.pink, null);
+                return getResources().getColorStateList(R.color.game1024, null);
 
             case 2048:
-                return getResources().getColorStateList(R.color.cian, null);
+                return getResources().getColorStateList(R.color.game2048, null);
                 //return getResources().getColorStateList(R.color.game2048, null);
 
             default:

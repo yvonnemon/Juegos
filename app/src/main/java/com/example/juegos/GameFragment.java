@@ -26,13 +26,26 @@ public class GameFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button login = view.findViewById(R.id.maingame);
+        Button mainGame = view.findViewById(R.id.maingame);
+        Button lineFour = view.findViewById(R.id.linefour);
+        Button hanged = view.findViewById(R.id.hanged);
 
         //on click, cambia de actividad
-        login.setOnClickListener(v -> {
+        mainGame.setOnClickListener(v -> {
             // Create an intent to navigate to the new activity
             Intent intent = new Intent(requireActivity(), MainGameActivity.class);
             startActivity(intent);
+        });
+        lineFour.setOnClickListener(v -> {
+            // Create an intent to navigate to the new activity
+            Intent intent = new Intent(requireActivity(), LineFourActivity.class);
+            startActivity(intent);
+        });
+        hanged.setOnClickListener(v -> {
+            // Create an intent to navigate to the new activity
+            //Intent intent = new Intent(requireActivity(), MainGameActivity.class);
+            //startActivity(intent);
+            System.out.println("todo");
         });
     }
 }
