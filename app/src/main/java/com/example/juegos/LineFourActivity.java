@@ -74,23 +74,33 @@ public class LineFourActivity extends AppCompatActivity {
     private int getColumnFromTouch(float touchX) {
         GridLayout gridLayout = findViewById(R.id.gridLayout);
 
-        // Get grid's absolute position on the screen
+        // Get absolute position of GridLayout on the screen
         int[] location = new int[2];
         gridLayout.getLocationOnScreen(location);
-        int gridStartX = location[0];  // Left edge of the GridLayout
+        int gridStartX = location[0];  // Leftmost pixel of GridLayout
 
         // Ensure touch is within grid bounds
-        if (touchX < gridStartX) return -1;
+        if (touchX < gridStartX) return -1; // Ignore touches outside left edge
+        if (touchX > gridStartX + gridLayout.getWidth()) return -1; // Ignore touches outside right edge
 
-        // Calculate column width (including margins)
-        int cellSize = gridLayout.getWidth() / 7;
+        // Calculate cell width based on screen width
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        int cellSize = screenWidth / 9; // Fixed cell width
 
-        // Determine which column was tapped
-        int column = (int) ((touchX - gridStartX) / cellSize);
+        // Adjust touch position relative to GridLayout's starting X position
+        int relativeTouchX = (int) (touchX - gridStartX);
 
-        // Ensure column index is within bounds
-        return (column >= 0 && column < 7) ? column : -1;
+        // Calculate the column index
+        int column = relativeTouchX / cellSize; // Ensure accurate division
+
+        // Ensure column index is within valid bounds
+        column = Math.max(0, Math.min(column, COLS - 1));
+
+        return column;
     }
+
+
+
 
 
     private void makeMove(int column) {

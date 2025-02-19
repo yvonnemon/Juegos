@@ -16,12 +16,22 @@ public class LoginFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.login_fragment, container, false);
 
         Button login = rootView.findViewById(R.id.loginButton);
+        Button registerButton = rootView.findViewById(R.id.registerButton);
 
 
         login.setOnClickListener(v -> {
+            //TODO login
             // Use the activity's FragmentManager to replace the fragment
             requireActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.login_fragment, new GameFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+        registerButton.setOnClickListener(v -> {
+            //TODO login
+            // Use the activity's FragmentManager to replace the fragment
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.login_fragment, new RegisterFragment())
                     .addToBackStack(null)
                     .commit();
         });
