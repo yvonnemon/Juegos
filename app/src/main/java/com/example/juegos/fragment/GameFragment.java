@@ -1,4 +1,4 @@
-package com.example.juegos;
+package com.example.juegos.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,10 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.juegos.R;
+import com.example.juegos.activities.LineFourActivity;
+import com.example.juegos.activities.MainGameActivity;
 
 //Menu para elegir el juego
 public class GameFragment extends Fragment {

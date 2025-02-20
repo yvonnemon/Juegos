@@ -1,7 +1,6 @@
-package com.example.juegos;
+package com.example.juegos.activities;
 
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,11 +10,9 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.gridlayout.widget.GridLayout;
+
+import com.example.juegos.R;
 
 import java.util.ArrayList;
 import java.util.List;

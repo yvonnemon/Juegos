@@ -1,7 +1,8 @@
-package com.example.juegos;
+package com.example.juegos.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.example.juegos.R;
+import com.example.juegos.model.User;
+import com.example.juegos.repository.AppDatabase;
 
 public class RegisterFragment extends Fragment {
 
@@ -55,6 +60,11 @@ public class RegisterFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
 
+                                User username = new User();
+                                username.userName = user.toString();
+                                username.password = text1;
+                                createUser(username);
+
                                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                                 fragmentManager.beginTransaction()
                                         .replace(R.id.login_fragment, new LoginFragment()) // Ensure you're replacing the correct fragment container
@@ -65,5 +75,15 @@ public class RegisterFragment extends Fragment {
             }
 
         });
+    }
+
+    public void createUser(User user){
+        AppDatabase db = AppDatabase.getInstance(requireContext());
+
+        new Thread(() -> {
+            db.userDao().insertUser(user);
+            Log.d("User", "User created");
+        }).start();
+
     }
 }

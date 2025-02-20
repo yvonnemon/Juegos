@@ -1,14 +1,15 @@
-package com.example.juegos;
+package com.example.juegos.activities;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.gridlayout.widget.GridLayout;
+
+import com.example.juegos.R;
 
 import java.util.Arrays;
 
