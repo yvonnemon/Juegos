@@ -6,14 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.juegos.R;
 import com.example.juegos.activities.LineFourActivity;
 import com.example.juegos.activities.MainGameActivity;
+import com.example.juegos.activities.UserInfoActivity;
 
 //Menu para elegir el juego
 public class GameFragment extends Fragment {
@@ -30,25 +33,26 @@ public class GameFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button mainGame = view.findViewById(R.id.maingame);
-        Button lineFour = view.findViewById(R.id.linefour);
-        Button hanged = view.findViewById(R.id.hanged);
+        CardView maingame = view.findViewById(R.id.maingame);
 
-        //on click, cambia de actividad
-        mainGame.setOnClickListener(v -> {
-            // Create an intent to navigate to the new activity
+        maingame.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), MainGameActivity.class);
             startActivity(intent);
         });
-        lineFour.setOnClickListener(v -> {
-            // Create an intent to navigate to the new activity
+
+        CardView linefour = view.findViewById(R.id.linefour);
+        linefour.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), LineFourActivity.class);
             startActivity(intent);
         });
-        hanged.setOnClickListener(v -> {
+
+        //TODO
+        ImageButton userInfo = view.findViewById(R.id.userInfo);
+
+        userInfo.setOnClickListener(v -> {
             // Create an intent to navigate to the new activity
-            //Intent intent = new Intent(requireActivity(), MainGameActivity.class);
-            //startActivity(intent);
+            Intent intent = new Intent(requireActivity(), UserInfoActivity.class);
+            startActivity(intent);
             System.out.println("todo");
         });
     }

@@ -6,7 +6,9 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,8 +22,11 @@ import com.example.juegos.R;
 import com.example.juegos.model.UserGame;
 import com.example.juegos.repository.AppDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 //2048
@@ -99,9 +104,22 @@ public class MainGameActivity extends AppCompatActivity {
     //  METODOS DE MOVIMIENTO
     //
     private void onSwipeRight() {
-        System.out.println("derecha");
         int[][] oldGrid = copyGrid(cuadricula);
         cuadricula = moveRight(cuadricula);
+
+        // Animate only the moved tiles
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = GRID_SIZE - 2; j >= 0; j--) { // Right-to-left scan
+                if (oldGrid[i][j] != 0) {
+                    if (cuadricula[i][j + 1] == oldGrid[i][j] * 2) { // Check if a merge happened
+                        animateTileMovement(i, j, i, j + 1, oldGrid[i][j], true);
+                    } else if (cuadricula[i][j + 1] == oldGrid[i][j]) {
+                        animateTileMovement(i, j, i, j + 1, oldGrid[i][j], false);
+                    }
+                }
+            }
+        }
+
         if (!gridsAreEqual(oldGrid, cuadricula)) {
             addNewTile();
         }
@@ -110,10 +128,21 @@ public class MainGameActivity extends AppCompatActivity {
     }
 
     private void onSwipeLeft() {
-        System.out.println("izquierda");
-
         int[][] oldGrid = copyGrid(cuadricula);
-        cuadricula = moveLeft(cuadricula);
+        cuadricula = moveLeft(cuadricula); //  Move only once
+
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 1; j < GRID_SIZE; j++) { // Left-to-right scan
+                if (oldGrid[i][j] != 0) {
+                    if (cuadricula[i][j - 1] == oldGrid[i][j] * 2) {
+                        animateTileMovement(i, j, i, j - 1, oldGrid[i][j], true);
+                    } else if (cuadricula[i][j - 1] == oldGrid[i][j]) {
+                        animateTileMovement(i, j, i, j - 1, oldGrid[i][j], false);
+                    }
+                }
+            }
+        }
+
         if (!gridsAreEqual(oldGrid, cuadricula)) {
             addNewTile();
         }
@@ -122,10 +151,21 @@ public class MainGameActivity extends AppCompatActivity {
     }
 
     private void onSwipeUp() {
-        System.out.println("arriba");
-
         int[][] oldGrid = copyGrid(cuadricula);
-        cuadricula = moveUp(cuadricula);
+        cuadricula = moveUp(cuadricula); //  Move only once
+
+        for (int j = 0; j < GRID_SIZE; j++) {
+            for (int i = 1; i < GRID_SIZE; i++) { // Top-to-bottom scan
+                if (oldGrid[i][j] != 0) {
+                    if (cuadricula[i - 1][j] == oldGrid[i][j] * 2) {
+                        animateTileMovement(i, j, i - 1, j, oldGrid[i][j], true);
+                    } else if (cuadricula[i - 1][j] == oldGrid[i][j]) {
+                        animateTileMovement(i, j, i - 1, j, oldGrid[i][j], false);
+                    }
+                }
+            }
+        }
+
         if (!gridsAreEqual(oldGrid, cuadricula)) {
             addNewTile();
         }
@@ -134,10 +174,21 @@ public class MainGameActivity extends AppCompatActivity {
     }
 
     private void onSwipeDown() {
-        System.out.println("abajo");
-
         int[][] oldGrid = copyGrid(cuadricula);
-        cuadricula = moveDown(cuadricula);
+        cuadricula = moveDown(cuadricula); //  Move only once
+
+        for (int j = 0; j < GRID_SIZE; j++) {
+            for (int i = GRID_SIZE - 2; i >= 0; i--) { // Bottom-to-top scan
+                if (oldGrid[i][j] != 0) {
+                    if (cuadricula[i + 1][j] == oldGrid[i][j] * 2) {
+                        animateTileMovement(i, j, i + 1, j, oldGrid[i][j], true);
+                    } else if (cuadricula[i + 1][j] == oldGrid[i][j]) {
+                        animateTileMovement(i, j, i + 1, j, oldGrid[i][j], false);
+                    }
+                }
+            }
+        }
+
         if (!gridsAreEqual(oldGrid, cuadricula)) {
             addNewTile();
         }
@@ -160,7 +211,6 @@ public class MainGameActivity extends AppCompatActivity {
         return grid;
     }
 
-
     private int[][] moveRight(int[][] grid) {
         for (int i = 0; i < GRID_SIZE; i++) {
             grid[i] = reverse(slideAndMerge(reverse(grid[i])));
@@ -168,21 +218,22 @@ public class MainGameActivity extends AppCompatActivity {
         return grid;
     }
 
-
     private int[][] moveUp(int[][] grid) {
         grid = rotateCounterclockwise(grid);
         grid = moveLeft(grid);
         return rotateClockwise(grid);
     }
 
-    //
-    // METODOS DE MOVER LOS NUMEROS DE UN LADO A OTRO
-    //
     private int[][] moveDown(int[][] grid) {
         grid = rotateClockwise(grid);
         grid = moveLeft(grid);
         return rotateCounterclockwise(grid);
     }
+
+    //
+    // METODOS DE MOVER LOS NUMEROS DE UN LADO A OTRO
+    //
+
     // Slide and merge a row
     private int[] slideAndMerge(int[] row) {
         row = slide(row);
@@ -249,7 +300,9 @@ public class MainGameActivity extends AppCompatActivity {
         return rotated;
     }
 
+    //
     // METODOS DE USO
+    //
     private void addNewTile() {
         List<int[]> emptyCells = new ArrayList<>();
         for (int i = 0; i < GRID_SIZE; i++) {
@@ -288,7 +341,6 @@ public class MainGameActivity extends AppCompatActivity {
         }
         return false; // No moves left
     }
-
 
     private void showGameOverDialog() {
         saveGameScore();
@@ -335,6 +387,16 @@ public class MainGameActivity extends AppCompatActivity {
                     textView.setTypeface(null, Typeface.BOLD);
                     if (grid[i][j] != 0) {
                         textView.setText(String.valueOf(grid[i][j]));
+                        if (grid[i][j] == 2 || grid[i][j] == 4) { // New tiles usually spawn as 2 or 4
+                            textView.setScaleX(0f);
+                            textView.setScaleY(0f);
+                            textView.animate()
+                                    .scaleX(1f)
+                                    .scaleY(1f)
+                                    .setInterpolator(new android.view.animation.OvershootInterpolator()) // Smooth pop effect
+                                    .setDuration(150)
+                                    .start();
+                        }
                         if (grid[i][j] == 2048) {
                             showWinDialog();
                         }
@@ -393,15 +455,20 @@ public class MainGameActivity extends AppCompatActivity {
 
     private void saveGameScore() {
         int userId = getCurrentUserId(); // Fetch user ID
-
+        int idf = (int) (System.currentTimeMillis() / 1000);
+      //  UserGame userGame = new UserGame(userId, 2, "2048", score, idf);
         UserGame userGame = new UserGame();
         userGame.user_id = userId;
-        userGame.game_id = (int) (System.currentTimeMillis() / 1000); // Unique game ID based on time
+
+        userGame.game_id = 1;
         userGame.score = score;
+        userGame.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+        userGame.gameName ="2048";
 
         db.userGameDao().insertGame(userGame);
         updateHighestScores();
     }
+
     private ColorStateList setTileColor(int tileNumber){
         switch(tileNumber) {
             case 2:
@@ -454,5 +521,72 @@ public class MainGameActivity extends AppCompatActivity {
        // return getResources().getColorStateList(R.color.pink, null);
     }
 
+    //
+    // FAKE MOVEMENT STUFF
+    //
+    private void animateTileMovement(int fromRow, int fromCol, int toRow, int toCol, int value, boolean merging) {
+        FrameLayout overlay = findViewById(R.id.overlay);
+
+        TextView fakeTile = new TextView(this);
+        fakeTile.setText(String.valueOf(value));
+        fakeTile.setTextSize(24);
+        fakeTile.setGravity(Gravity.CENTER);
+        fakeTile.setTypeface(null, Typeface.BOLD);
+        fakeTile.setBackgroundTintList(setTileColor(value));
+
+        int tileSize = getResources().getDimensionPixelSize(R.dimen.tile_size);
+        int fromX = getTileX(fromCol);
+        int fromY = getTileY(fromRow);
+        int toX = getTileX(toCol);
+        int toY = getTileY(toRow);
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(tileSize, tileSize);
+        params.leftMargin = fromX;
+        params.topMargin = fromY;
+        fakeTile.setLayoutParams(params);
+        overlay.addView(fakeTile);
+
+        // Animate movement with a slight delay for merges
+        fakeTile.animate()
+                .translationX(toX - fromX)
+                .translationY(toY - fromY)
+                .setInterpolator(new android.view.animation.AccelerateDecelerateInterpolator())
+                .setDuration(250)
+                .withEndAction(() -> {
+                    if (merging) {
+                        fakeTile.animate()
+                                .scaleX(0f)
+                                .scaleY(0f)
+                                .setDuration(100)
+                                .withEndAction(() -> overlay.removeView(fakeTile))
+                                .start();
+                    } else {
+                        overlay.removeView(fakeTile);
+                    }
+                })
+                .start();
+    }
+
+
+
+    private int getTileX(int col) {
+        GridLayout gridLayout = findViewById(R.id.gridLayout);
+        int[] location = new int[2];
+        gridLayout.getLocationOnScreen(location); // Get top-left corner of GridLayout
+        int gridX = location[0];
+
+        int tileSize = gridLayout.getWidth() / GRID_SIZE; // Dynamic tile size
+        return gridX + (col * tileSize);
+    }
+
+    private int getTileY(int row) {
+        GridLayout gridLayout = findViewById(R.id.gridLayout);
+        int[] location = new int[2];
+        gridLayout.getLocationOnScreen(location);
+        int gridY = location[1];
+
+        int tileSize = gridLayout.getHeight() / GRID_SIZE;
+        return gridY + (row * tileSize);
+    }
 }
 

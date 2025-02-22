@@ -20,6 +20,7 @@
     <color name="grisazul">#779CAB</color>
     <color name="azulfancy">#A2E8DD</color>
     <color name="monk">#32DE8A</color>
+    <color name="verdeclaro">#bde6d0</color>
 <!--    colores para los cuadritos del 2048-->
     <color name="game4">#C1F3F5</color>
     <color name="game8">#B1E8EA</color>
@@ -34,3 +35,4 @@
 
 
 </resources>
+

@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.juegos.R;
 import com.example.juegos.activities.MainActivity;
+import com.example.juegos.model.Game;
 import com.example.juegos.model.User;
 import com.example.juegos.repository.AppDatabase;
 import com.example.juegos.session.SessionManager;
@@ -46,7 +47,7 @@ public class LoginFragment extends Fragment {
             attemptLogin(username.getText().toString(), password.getText().toString());
 
             //logAllUsers();
-
+            getgames();
         });
         registerButton.setOnClickListener(v -> {
             //TODO login
@@ -101,6 +102,14 @@ public class LoginFragment extends Fragment {
             List<User> users = database.userDao().getAllPlayers();
             for (User user : users) {
                 Log.d("Database", "User ID: " + user.id + ", Username: " + user.userName);
+            }
+        }).start();
+    }
+    private void getgames() {
+        new Thread(() -> {
+            List<Game> users = database.gameDao().getAllSessions();
+            for (Game user : users) {
+                Log.d("Database", "ID: " + user.id + ", name: " + user.name);
             }
         }).start();
     }

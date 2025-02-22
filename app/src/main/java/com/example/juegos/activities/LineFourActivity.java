@@ -1,5 +1,6 @@
 package com.example.juegos.activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -8,15 +9,21 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.gridlayout.widget.GridLayout;
+import androidx.room.Room;
 
 import com.example.juegos.R;
+import com.example.juegos.model.UserGame;
+import com.example.juegos.repository.AppDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 
 public class LineFourActivity extends AppCompatActivity {
     private static final int ROWS = 6;
     private static final int COLS = 7;
-
+    private AppDatabase db;
     private int[][] board = new int[ROWS][COLS]; // 0 = empty, 1 = player 1, 2 = player 2
     private TextView[][] cellViews = new TextView[ROWS][COLS];
     private int currentPlayer = 1; // Player 1 starts
@@ -27,6 +34,8 @@ public class LineFourActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.line_four_activity);
+
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "game_db").allowMainThreadQueries().build();
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -110,6 +119,7 @@ public class LineFourActivity extends AppCompatActivity {
                 board[row][column] = currentPlayer;
                 updateUI();
                 if (checkWin(row, column)) {
+                    saveGameScore(currentPlayer);
                     showWinMessage();
                 } else {
                     switchPlayer();
@@ -124,6 +134,27 @@ public class LineFourActivity extends AppCompatActivity {
                 checkDirection(row, col, 0, 1) ||  // Vertical
                 checkDirection(row, col, 1, 1) ||  // Diagonal \
                 checkDirection(row, col, 1, -1);   // Diagonal /
+    }
+
+    private void saveGameScore(int player) {
+        int userId = getCurrentUserId(); // Fetch user ID
+
+        UserGame userGame = new UserGame();
+        userGame.user_id = userId;
+        userGame.game_id = 2;
+
+        // añadir un ? de info abajo para que si gana el jugador 1 se le guarda el score al usuario logeado
+        userGame.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+        userGame.score = player == 1 ? 1 : 0;
+        userGame.gameName ="Line Four";
+
+        db.userGameDao().insertGame(userGame);
+
+    }
+
+    private int getCurrentUserId() {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        return sharedPreferences.getInt("user_id", -1); // Default to -1 if no user is found
     }
 
     // Checks if there are 4 pieces in a row in a given direction
