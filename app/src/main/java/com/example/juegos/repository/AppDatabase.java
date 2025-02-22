@@ -13,7 +13,7 @@ import com.example.juegos.model.dao.GameDao;
 import com.example.juegos.model.dao.UserDao;
 import com.example.juegos.model.dao.UserGameDao;
 
-@Database(entities = {User.class, Game.class, UserGame.class}, version = 1)
+@Database(entities = {User.class, Game.class, UserGame.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;

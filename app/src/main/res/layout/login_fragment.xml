@@ -17,7 +17,7 @@
 
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/usernameInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -27,7 +27,7 @@
             android:backgroundTint="@color/evoker"/>
 
         <EditText
-            android:id="@+id/editTextTextPassword"
+            android:id="@+id/passwordInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"

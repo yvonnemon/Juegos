@@ -15,4 +15,10 @@ public interface UserDao {
 
     @Query("SELECT * FROM User")
     List<User> getAllPlayers();
+
+    @Query("SELECT * FROM User WHERE userName = :userId LIMIT 1")
+    User getUserByUsername(String userId);
+
+    @Query("DELETE FROM User")
+    void clearUsers();
 }

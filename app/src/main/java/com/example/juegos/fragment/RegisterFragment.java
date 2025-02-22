@@ -34,6 +34,7 @@ public class RegisterFragment extends Fragment {
 
         Button submit = view.findViewById(R.id.submitButton);
         EditText user = view.findViewById(R.id.username);
+        //String usuario = user.
         EditText pass = view.findViewById(R.id.password);
         EditText pass2 = view.findViewById(R.id.password2);
         String text1 = pass.getText().toString();
@@ -61,7 +62,7 @@ public class RegisterFragment extends Fragment {
                                 dialog.dismiss();
 
                                 User username = new User();
-                                username.userName = user.toString();
+                                username.userName = user.getText().toString();
                                 username.password = text1;
                                 createUser(username);
 

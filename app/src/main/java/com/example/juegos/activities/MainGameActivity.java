@@ -1,5 +1,6 @@
 package com.example.juegos.activities;
 
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -7,12 +8,17 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.gridlayout.widget.GridLayout;
+import androidx.room.Room;
 
 import com.example.juegos.R;
+import com.example.juegos.model.UserGame;
+import com.example.juegos.repository.AppDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +27,21 @@ import java.util.Random;
 //2048
 
 public class MainGameActivity extends AppCompatActivity {
-    private GestureDetector gestureDetector;
     private final int GRID_SIZE = 4;
     private int[][] cuadricula = new int[GRID_SIZE][GRID_SIZE];
+    private AppDatabase db;
+    private GestureDetector gestureDetector;
+    private int score = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.main_game_activity);
+
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "game_db").allowMainThreadQueries().build();
+        updateHighestScores();
+
         addNewTile();
         drawNumbers(cuadricula);
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
@@ -93,6 +106,7 @@ public class MainGameActivity extends AppCompatActivity {
             addNewTile();
         }
         drawNumbers(cuadricula);
+        checkGameOver();
     }
 
     private void onSwipeLeft() {
@@ -104,6 +118,7 @@ public class MainGameActivity extends AppCompatActivity {
             addNewTile();
         }
         drawNumbers(cuadricula);
+        checkGameOver();
     }
 
     private void onSwipeUp() {
@@ -115,6 +130,7 @@ public class MainGameActivity extends AppCompatActivity {
             addNewTile();
         }
         drawNumbers(cuadricula);
+        checkGameOver();
     }
 
     private void onSwipeDown() {
@@ -126,9 +142,14 @@ public class MainGameActivity extends AppCompatActivity {
             addNewTile();
         }
         drawNumbers(cuadricula);
+        checkGameOver();
     }
 
-
+    private void checkGameOver() {
+        if (!canMove()) {
+            showGameOverDialog();
+        }
+    }
     //
     //  METODOS QUE REALIZAN LA ACCION CON EL GRID
     //
@@ -188,6 +209,8 @@ public class MainGameActivity extends AppCompatActivity {
             if (row[i] != 0 && row[i] == row[i + 1]) {
                 row[i] *= 2;
                 row[i + 1] = 0;
+                score += row[i];
+                updateScoreUI();
             }
         }
         return row;
@@ -236,9 +259,48 @@ public class MainGameActivity extends AppCompatActivity {
                 }
             }
         }
-        if (emptyCells.isEmpty()) return;
+        if (emptyCells.isEmpty()) {
+            if (!canMove()) {
+                showGameOverDialog();
+                return;
+            }
+        }
         int[] cell = emptyCells.get(new Random().nextInt(emptyCells.size()));
         cuadricula[cell[0]][cell[1]] = Math.random() < 0.9 ? 2 : 4;
+    }
+
+    private boolean canMove() {
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                if (cuadricula[i][j] == 0) {
+                    System.out.println("move");
+                    return true; // If there’s an empty cell, moves are possible
+                }
+                if (j < GRID_SIZE - 1 && cuadricula[i][j] == cuadricula[i][j + 1]) {
+                    System.out.println("move horizontal");
+                    return true; // Horizontal merge is possible
+                }
+                if (i < GRID_SIZE - 1 && cuadricula[i][j] == cuadricula[i + 1][j]) {
+                    System.out.println("move vertical");
+                    return true; // Vertical merge is possible
+                }
+            }
+        }
+        return false; // No moves left
+    }
+
+
+    private void showGameOverDialog() {
+        saveGameScore();
+        runOnUiThread(() -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Game Over")
+                    .setMessage("No more moves available!")
+                    .setPositiveButton("OK", (dialog, which) -> restartGame())
+                    .setNegativeButton("Exit", (dialog, which) -> finish())
+                    .setCancelable(false)
+                    .show();
+        });
     }
 
     private int[][] copyGrid(int[][] grid) {
@@ -273,7 +335,9 @@ public class MainGameActivity extends AppCompatActivity {
                     textView.setTypeface(null, Typeface.BOLD);
                     if (grid[i][j] != 0) {
                         textView.setText(String.valueOf(grid[i][j]));
-
+                        if (grid[i][j] == 2048) {
+                            showWinDialog();
+                        }
                     } else {
                         textView.setText(""); // Clear the TextView for zero values
                     }
@@ -284,6 +348,60 @@ public class MainGameActivity extends AppCompatActivity {
         }
     }
 
+    private void showWinDialog() {
+
+        runOnUiThread(() -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Congratulations!")
+                    .setMessage("You reached 2048!")
+                    .setPositiveButton("Continue", (dialog, which) -> dialog.dismiss())
+                    .setNegativeButton("Restart", (dialog, which) -> restartGame())
+                    .show();
+        });
+    }
+
+    private void restartGame() {
+        score = 0;
+        cuadricula = new int[GRID_SIZE][GRID_SIZE];
+        addNewTile();
+        addNewTile();
+        updateScoreUI();
+        drawNumbers(cuadricula);
+    }
+
+    private void updateScoreUI() {
+        TextView scoreView = findViewById(R.id.scoreTextView);
+        scoreView.setText("Score: " + score);
+    }
+
+    private void updateHighestScores() {
+        if (getCurrentUserId() == -1) {
+            Toast.makeText(this, "User not found! Please log in.", Toast.LENGTH_SHORT).show();
+        }
+        int userId = getCurrentUserId(); // Get user ID from SharedPreferences or session
+        int userBest = db.userGameDao().getUserHighestScore(userId);
+        int globalBest = db.userGameDao().getHighestOverallScore();
+
+        TextView highestScoreView = findViewById(R.id.highestScoreTextView);
+        highestScoreView.setText("Highest Score: " + Math.max(userBest, globalBest));
+    }
+
+    private int getCurrentUserId() {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        return sharedPreferences.getInt("user_id", -1); // Default to -1 if no user is found
+    }
+
+    private void saveGameScore() {
+        int userId = getCurrentUserId(); // Fetch user ID
+
+        UserGame userGame = new UserGame();
+        userGame.user_id = userId;
+        userGame.game_id = (int) (System.currentTimeMillis() / 1000); // Unique game ID based on time
+        userGame.score = score;
+
+        db.userGameDao().insertGame(userGame);
+        updateHighestScores();
+    }
     private ColorStateList setTileColor(int tileNumber){
         switch(tileNumber) {
             case 2:
