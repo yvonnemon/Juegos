@@ -57,6 +57,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar2">
+        <FrameLayout
+            android:id="@+id/overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:layout_constraintTop_toTopOf="@id/gameContainer"
+            app:layout_constraintBottom_toBottomOf="@id/gameContainer"
+            app:layout_constraintStart_toStartOf="@id/gameContainer"
+            app:layout_constraintEnd_toEndOf="@id/gameContainer" />
+
+
         <RelativeLayout
             android:id="@+id/gameContainer"
             android:layout_width="wrap_content"
@@ -344,6 +357,7 @@
         </androidx.gridlayout.widget.GridLayout>
 
         </RelativeLayout>
+
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
