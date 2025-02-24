@@ -1,6 +1,9 @@
 package com.example.juegos.fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +22,11 @@ import com.example.juegos.R;
 import com.example.juegos.model.User;
 import com.example.juegos.repository.AppDatabase;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 public class RegisterFragment extends Fragment {
+
+    AtomicLong usuarioID = new AtomicLong();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,9 +73,17 @@ public class RegisterFragment extends Fragment {
                                 username.password = text1;
                                 createUser(username);
 
+                                //guardar en la sesion
+                                SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("user_id", usuarioID.intValue()); // Save user ID
+                                editor.putString("username", user.getText().toString()); // Save username
+                                editor.apply();
+
+
                                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                                 fragmentManager.beginTransaction()
-                                        .replace(R.id.login_fragment, new LoginFragment()) // Ensure you're replacing the correct fragment container
+                                        .replace(R.id.login_fragment, new GameFragment()) // Ensure you're replacing the correct fragment container
                                         .addToBackStack(null) // Allows going back if needed
                                         .commit();
                             }
@@ -82,7 +97,8 @@ public class RegisterFragment extends Fragment {
         AppDatabase db = AppDatabase.getInstance(requireContext());
 
         new Thread(() -> {
-            db.userDao().insertUser(user);
+            usuarioID.set(db.userDao().insertUser(user));
+            //return x;
             Log.d("User", "User created");
         }).start();
 

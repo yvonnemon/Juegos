@@ -43,8 +43,12 @@ public class LineFourActivity extends AppCompatActivity {
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "game_db").allowMainThreadQueries().build();
 
         settings = db.gameSettingsDao().getSettings(); // Runs in the background
-        System.out.println(settings.toString());
-        blindmode = settings.colorBlind;
+
+        if(settings != null){
+            System.out.println(settings.toString());
+            blindmode = settings.colorBlind;
+        }
+
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);

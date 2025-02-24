@@ -54,8 +54,12 @@ public class MainGameActivity extends AppCompatActivity {
 
         //Executors.newSingleThreadExecutor().execute(() -> {
         settings = db.gameSettingsDao().getSettings(); // Runs in the background
-        System.out.println(settings.toString());
-        originalTile = settings.originalTiles;
+
+        if(settings != null) {
+            System.out.println(settings.toString());
+            originalTile = settings.originalTiles;
+        }
+
 
         //});
 
@@ -388,6 +392,7 @@ public class MainGameActivity extends AppCompatActivity {
         }
         return true;
     }
+
     private void drawNumbers(int[][] grid) {
         int nro = 0;
 
