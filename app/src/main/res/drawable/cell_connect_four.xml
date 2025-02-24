@@ -2,13 +2,13 @@
 
     <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <!-- Background: Blue-Greenish -->
-        <item>
-            <shape android:shape="rectangle">
-                <solid android:color="#2BBD7E"/> <!-- Deep Blue -->
-                <corners android:radius="4dp"/> <!-- Rounded corners -->
-            </shape>
-        </item>
+<!--        &lt;!&ndash; Background: Blue-Greenish &ndash;&gt;-->
+<!--        <item>-->
+<!--            <shape android:shape="rectangle">-->
+<!--                <solid android:color="#2BBD7E"/> &lt;!&ndash; Deep Blue &ndash;&gt;-->
+<!--                <corners android:radius="4dp"/> &lt;!&ndash; Rounded corners &ndash;&gt;-->
+<!--            </shape>-->
+<!--        </item>-->
 
         <!-- White Circle in the Center -->
         <item>

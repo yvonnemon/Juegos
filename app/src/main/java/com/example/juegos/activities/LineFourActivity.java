@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,17 +14,21 @@ import androidx.room.Room;
 
 import com.example.juegos.R;
 import com.example.juegos.model.UserGame;
+import com.example.juegos.model.UserSettings;
 import com.example.juegos.repository.AppDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 public class LineFourActivity extends AppCompatActivity {
     private static final int ROWS = 6;
     private static final int COLS = 7;
     private AppDatabase db;
+    private UserSettings settings;
+    private boolean blindmode = false;
     private int[][] board = new int[ROWS][COLS]; // 0 = empty, 1 = player 1, 2 = player 2
     private TextView[][] cellViews = new TextView[ROWS][COLS];
     private int currentPlayer = 1; // Player 1 starts
@@ -36,6 +41,10 @@ public class LineFourActivity extends AppCompatActivity {
         setContentView(R.layout.line_four_activity);
 
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "game_db").allowMainThreadQueries().build();
+
+        settings = db.gameSettingsDao().getSettings(); // Runs in the background
+        System.out.println(settings.toString());
+        blindmode = settings.colorBlind;
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -148,7 +157,10 @@ public class LineFourActivity extends AppCompatActivity {
         userGame.score = player == 1 ? 1 : 0;
         userGame.gameName ="Line Four";
 
-        db.userGameDao().insertGame(userGame);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            db.userGameDao().insertGame(userGame);
+            runOnUiThread(() -> Toast.makeText(this, "Score saved!", Toast.LENGTH_SHORT).show());
+        });
 
     }
 
@@ -195,9 +207,9 @@ public class LineFourActivity extends AppCompatActivity {
                 TextView cell = cellViews[row][col]; // Get the stored reference
 
                 if (board[row][col] == 1) {
-                    cell.setBackgroundResource(R.drawable.player1_piece);
+                    cell.setBackgroundResource(blindmode ? R.drawable.blind1 : R.drawable.player1_piece);
                 } else if (board[row][col] == 2) {
-                    cell.setBackgroundResource(R.drawable.player2_piece);
+                    cell.setBackgroundResource(blindmode ? R.drawable.blind2 : R.drawable.player2_piece);
                 } else {
                     cell.setBackgroundResource(R.drawable.cell_connect_four);
                 }

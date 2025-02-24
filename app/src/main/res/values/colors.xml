@@ -32,6 +32,19 @@
     <color name="game512">#51AAAA</color>
     <color name="game1024">#419F9F</color>
     <color name="game2048">#399595</color>
+    <!-- los de verdad -->
+    <color name="legit2">#F6E8CF</color>
+    <color name="legit4">#EDDFC4</color>
+    <color name="legit8">#F8B174</color>
+    <color name="legit16">#F79663</color>
+    <color name="legit32">#F67D62</color>
+    <color name="legit64">#F65E39</color>
+    <color name="legit128">#EDCE73</color>
+    <color name="legit256">#EDCA64</color>
+    <color name="legit512">#EDC651</color>
+    <color name="legit1024">#EEC744</color>
+    <color name="legit2048">#EDC130</color>
+
 
 
 </resources>

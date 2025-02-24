@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import androidx.room.Room;
 
 import com.example.juegos.R;
 import com.example.juegos.model.UserGame;
+import com.example.juegos.model.UserSettings;
 import com.example.juegos.repository.AppDatabase;
 
 import java.text.SimpleDateFormat;
@@ -28,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.concurrent.Executors;
 
 //2048
 
@@ -35,6 +38,8 @@ public class MainGameActivity extends AppCompatActivity {
     private final int GRID_SIZE = 4;
     private int[][] cuadricula = new int[GRID_SIZE][GRID_SIZE];
     private AppDatabase db;
+    private UserSettings settings;
+    private boolean originalTile = false;
     private GestureDetector gestureDetector;
     private int score = 0;
 
@@ -46,6 +51,13 @@ public class MainGameActivity extends AppCompatActivity {
 
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "game_db").allowMainThreadQueries().build();
         updateHighestScores();
+
+        //Executors.newSingleThreadExecutor().execute(() -> {
+        settings = db.gameSettingsDao().getSettings(); // Runs in the background
+        System.out.println(settings.toString());
+        originalTile = settings.originalTiles;
+
+        //});
 
         addNewTile();
         drawNumbers(cuadricula);
@@ -92,6 +104,9 @@ public class MainGameActivity extends AppCompatActivity {
 
         GridLayout gridLayout = findViewById(R.id.gridLayout);
         gridLayout.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
+
+        Button btnSaveScore = findViewById(R.id.btnSaveScore);
+        btnSaveScore.setOnClickListener(v -> saveGameScore());
     }
     /*
      * [1,2,3,4],
@@ -465,53 +480,59 @@ public class MainGameActivity extends AppCompatActivity {
         userGame.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
         userGame.gameName ="2048";
 
-        db.userGameDao().insertGame(userGame);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            db.userGameDao().insertGame(userGame);
+            runOnUiThread(() -> Toast.makeText(this, "Score saved!", Toast.LENGTH_SHORT).show());
+        });
         updateHighestScores();
     }
 
     private ColorStateList setTileColor(int tileNumber){
+
+        System.out.println("originalTile "+originalTile);
+
         switch(tileNumber) {
             case 2:
-                return getResources().getColorStateList(R.color.celesteclaro, null);
+                return getResources().getColorStateList(originalTile ? R.color.legit2 : R.color.celesteclaro, null);
 
             case 4:
-                return getResources().getColorStateList(R.color.game4, null);
+                return getResources().getColorStateList(originalTile ? R.color.legit4 : R.color.game4, null);
                // return getResources().getColorStateList(R.color.game4, null);
 
             case 8:
-                return getResources().getColorStateList(R.color.game8, null);
+                return getResources().getColorStateList(originalTile ? R.color.legit8 : R.color.game8, null);
                 //return getResources().getColorStateList(R.color.game8, null);
 
             case 16:
-                return getResources().getColorStateList(R.color.game16, null);
+                return getResources().getColorStateList(originalTile ? R.color.legit16 : R.color.game16, null);
                 //return getResources().getColorStateList(R.color.game16, null);
 
             case 32:
-                return getResources().getColorStateList(R.color.game32, null);
+                return getResources().getColorStateList(originalTile ? R.color.legit32 : R.color.game32, null);
                 //return getResources().getColorStateList(R.color.game32, null);
 
             case 64:
-                return getResources().getColorStateList(R.color.game64, null);
+                return getResources().getColorStateList(originalTile ? R.color.legit64 : R.color.game64, null);
                 //return getResources().getColorStateList(R.color.game64, null);
 
             case 128:
-                return getResources().getColorStateList(R.color.game128, null);
+                return getResources().getColorStateList(originalTile ? R.color.legit128 : R.color.game128, null);
                 //return getResources().getColorStateList(R.color.game128, null);
 
             case 256:
-                return getResources().getColorStateList(R.color.game256, null);
+                return getResources().getColorStateList(originalTile ? R.color.legit256 : R.color.game256, null);
                 //return getResources().getColorStateList(R.color.game256, null);
 
             case 512:
-                return getResources().getColorStateList(R.color.game512, null);
+                return getResources().getColorStateList(originalTile ? R.color.legit512 : R.color.game512, null);
                 //return getResources().getColorStateList(R.color.game512, null);
 
             case 1024:
                 //return getResources().getColorStateList(R.color.game1024, null);
-                return getResources().getColorStateList(R.color.game1024, null);
+                return getResources().getColorStateList(originalTile ? R.color.legit1024 : R.color.game1024, null);
 
             case 2048:
-                return getResources().getColorStateList(R.color.game2048, null);
+                return getResources().getColorStateList(originalTile ? R.color.legit2048 : R.color.game2048, null);
                 //return getResources().getColorStateList(R.color.game2048, null);
 
             default:

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.juegos.R;
 import com.example.juegos.activities.LineFourActivity;
 import com.example.juegos.activities.MainGameActivity;
+import com.example.juegos.activities.SettingsActivity;
 import com.example.juegos.activities.UserInfoActivity;
 
 //Menu para elegir el juego
@@ -52,6 +53,14 @@ public class GameFragment extends Fragment {
         userInfo.setOnClickListener(v -> {
             // Create an intent to navigate to the new activity
             Intent intent = new Intent(requireActivity(), UserInfoActivity.class);
+            startActivity(intent);
+            System.out.println("todo");
+        });
+
+        ImageButton settingsButton = view.findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(v -> {
+            // Create an intent to navigate to the new activity
+            Intent intent = new Intent(requireActivity(), SettingsActivity.class);
             startActivity(intent);
             System.out.println("todo");
         });
