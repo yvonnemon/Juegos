@@ -26,16 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:background="@drawable/otro2048"> <!-- Replace with your image -->
+            android:background="@drawable/otro2048">
 
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:text="2048"-->
-<!--                android:textSize="20sp"-->
-<!--                android:textStyle="bold"-->
-<!--                android:gravity="center"-->
-<!--                android:textColor="@android:color/black"/>-->
         </FrameLayout>
     </androidx.cardview.widget.CardView>
 

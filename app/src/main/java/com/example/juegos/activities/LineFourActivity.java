@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,8 @@ import java.util.concurrent.Executors;
 public class LineFourActivity extends AppCompatActivity {
     private static final int ROWS = 6;
     private static final int COLS = 7;
+    private boolean isAIEnabled = false; // Default: Player vs Player
+
     private AppDatabase db;
     private UserSettings settings;
     private boolean blindmode = false;
@@ -44,23 +47,22 @@ public class LineFourActivity extends AppCompatActivity {
 
         settings = db.gameSettingsDao().getSettings(); // Runs in the background
 
-        if(settings != null){
-            System.out.println(settings.toString());
-            blindmode = settings.colorBlind;
-        }
+        if (settings != null) {
 
+            blindmode = settings.colorBlind;
+            isAIEnabled = settings.soloPlayer;
+            TextView ia = findViewById(R.id.playWithIa);
+            ia.setVisibility(View.VISIBLE);
+        }
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         this.height = displayMetrics.heightPixels;
         this.width = displayMetrics.widthPixels;
 
-
         GridLayout gridLayout = findViewById(R.id.gridLayout);
         gridLayout.setRowCount(6);
         gridLayout.setColumnCount(7);
-
-
 
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
@@ -68,8 +70,8 @@ public class LineFourActivity extends AppCompatActivity {
                 cell.setBackgroundResource(R.drawable.cell_connect_four);
 
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.width = width/9;
-                params.height = width/9;
+                params.width = width / 9;
+                params.height = width / 9;
                 params.setMargins(4, 4, 4, 4); // Small margin to separate cells
                 cell.setLayoutParams(params);
 
@@ -89,11 +91,6 @@ public class LineFourActivity extends AppCompatActivity {
         });
     }
 
-    // Convert dp to pixels for different screen densities
-    private int dpToPx(int dp) {
-        return (int) (dp * getResources().getDisplayMetrics().density);
-    }
-
     private int getColumnFromTouch(float touchX) {
         GridLayout gridLayout = findViewById(R.id.gridLayout);
 
@@ -104,7 +101,8 @@ public class LineFourActivity extends AppCompatActivity {
 
         // Ensure touch is within grid bounds
         if (touchX < gridStartX) return -1; // Ignore touches outside left edge
-        if (touchX > gridStartX + gridLayout.getWidth()) return -1; // Ignore touches outside right edge
+        if (touchX > gridStartX + gridLayout.getWidth())
+            return -1; // Ignore touches outside right edge
 
         // Calculate cell width based on screen width
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
@@ -123,19 +121,23 @@ public class LineFourActivity extends AppCompatActivity {
     }
 
 
-
-
-
     private void makeMove(int column) {
         for (int row = ROWS - 1; row >= 0; row--) {
             if (board[row][column] == 0) {
                 board[row][column] = currentPlayer;
                 updateUI();
+
                 if (checkWin(row, column)) {
                     saveGameScore(currentPlayer);
                     showWinMessage();
-                } else {
-                    switchPlayer();
+                    return;
+                }
+
+                switchPlayer();
+
+                // If AI mode is enabled and it's AI's turn, make AI move after delay
+                if (isAIEnabled && currentPlayer == 2) {
+                    new android.os.Handler().postDelayed(this::aiMove, 500);
                 }
                 return;
             }
@@ -157,9 +159,9 @@ public class LineFourActivity extends AppCompatActivity {
         userGame.game_id = 2;
 
         // añadir un ? de info abajo para que si gana el jugador 1 se le guarda el score al usuario logeado
-        userGame.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+        userGame.timestamp = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         userGame.score = player == 1 ? 1 : 0;
-        userGame.gameName ="Line Four";
+        userGame.gameName = "Line Four";
 
         Executors.newSingleThreadExecutor().execute(() -> {
             db.userGameDao().insertGame(userGame);
@@ -237,6 +239,20 @@ public class LineFourActivity extends AppCompatActivity {
         }
         currentPlayer = 1;
         updateUI();
+    }
+
+    private void aiMove() {
+        int column;
+        do {
+            column = (int) (Math.random() * COLS); // Random column
+        } while (!isColumnAvailable(column));
+
+        makeMove(column);
+    }
+
+    // Check if a column is not full
+    private boolean isColumnAvailable(int column) {
+        return board[0][column] == 0; // If the top row is empty, column is available
     }
 
 }

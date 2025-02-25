@@ -28,6 +28,4 @@ public interface UserGameDao {
 
     @Query("SELECT * FROM User_Game WHERE user_id = :playerId ORDER BY timestamp DESC")
     List<UserGame> getFromUserOrderByDateDesc(int playerId);
-
-
 }

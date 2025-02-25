@@ -52,16 +52,12 @@ public class MainGameActivity extends AppCompatActivity {
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "game_db").allowMainThreadQueries().build();
         updateHighestScores();
 
-        //Executors.newSingleThreadExecutor().execute(() -> {
-        settings = db.gameSettingsDao().getSettings(); // Runs in the background
+        settings = db.gameSettingsDao().getSettings();
 
-        if(settings != null) {
+        if (settings != null) {
             System.out.println(settings.toString());
             originalTile = settings.originalTiles;
         }
-
-
-        //});
 
         addNewTile();
         drawNumbers(cuadricula);
@@ -148,7 +144,7 @@ public class MainGameActivity extends AppCompatActivity {
 
     private void onSwipeLeft() {
         int[][] oldGrid = copyGrid(cuadricula);
-        cuadricula = moveLeft(cuadricula); //  Move only once
+        cuadricula = moveLeft(cuadricula);
 
         for (int i = 0; i < GRID_SIZE; i++) {
             for (int j = 1; j < GRID_SIZE; j++) { // Left-to-right scan
@@ -171,7 +167,7 @@ public class MainGameActivity extends AppCompatActivity {
 
     private void onSwipeUp() {
         int[][] oldGrid = copyGrid(cuadricula);
-        cuadricula = moveUp(cuadricula); //  Move only once
+        cuadricula = moveUp(cuadricula);
 
         for (int j = 0; j < GRID_SIZE; j++) {
             for (int i = 1; i < GRID_SIZE; i++) { // Top-to-bottom scan
@@ -194,7 +190,7 @@ public class MainGameActivity extends AppCompatActivity {
 
     private void onSwipeDown() {
         int[][] oldGrid = copyGrid(cuadricula);
-        cuadricula = moveDown(cuadricula); //  Move only once
+        cuadricula = moveDown(cuadricula); //
 
         for (int j = 0; j < GRID_SIZE; j++) {
             for (int i = GRID_SIZE - 2; i >= 0; i--) { // Bottom-to-top scan
@@ -220,9 +216,11 @@ public class MainGameActivity extends AppCompatActivity {
             showGameOverDialog();
         }
     }
+
     //
     //  METODOS QUE REALIZAN LA ACCION CON EL GRID
     //
+
     private int[][] moveLeft(int[][] grid) {
         for (int i = 0; i < GRID_SIZE; i++) {
             grid[i] = slideAndMerge(grid[i]);
@@ -294,6 +292,7 @@ public class MainGameActivity extends AppCompatActivity {
         }
         return reversed;
     }
+
     //se le pasa el array[][] por parametro para invertirlo de arribabajo
     private int[][] rotateClockwise(int[][] grid) {
         int n = grid.length;
@@ -327,7 +326,7 @@ public class MainGameActivity extends AppCompatActivity {
         for (int i = 0; i < GRID_SIZE; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {
                 if (cuadricula[i][j] == 0) {
-                    emptyCells.add(new int[] {i, j});
+                    emptyCells.add(new int[]{i, j});
                 }
             }
         }
@@ -431,7 +430,6 @@ public class MainGameActivity extends AppCompatActivity {
     }
 
     private void showWinDialog() {
-
         runOnUiThread(() -> {
             new AlertDialog.Builder(this)
                     .setTitle("Congratulations!")
@@ -475,15 +473,14 @@ public class MainGameActivity extends AppCompatActivity {
 
     private void saveGameScore() {
         int userId = getCurrentUserId(); // Fetch user ID
-        int idf = (int) (System.currentTimeMillis() / 1000);
-      //  UserGame userGame = new UserGame(userId, 2, "2048", score, idf);
+
         UserGame userGame = new UserGame();
         userGame.user_id = userId;
 
         userGame.game_id = 1;
         userGame.score = score;
         userGame.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-        userGame.gameName ="2048";
+        userGame.gameName = "2048";
 
         Executors.newSingleThreadExecutor().execute(() -> {
             db.userGameDao().insertGame(userGame);
@@ -492,45 +489,45 @@ public class MainGameActivity extends AppCompatActivity {
         updateHighestScores();
     }
 
-    private ColorStateList setTileColor(int tileNumber){
+    private ColorStateList setTileColor(int tileNumber) {
 
-        System.out.println("originalTile "+originalTile);
+        System.out.println("originalTile " + originalTile);
 
-        switch(tileNumber) {
+        switch (tileNumber) {
             case 2:
                 return getResources().getColorStateList(originalTile ? R.color.legit2 : R.color.celesteclaro, null);
 
             case 4:
                 return getResources().getColorStateList(originalTile ? R.color.legit4 : R.color.game4, null);
-               // return getResources().getColorStateList(R.color.game4, null);
+            // return getResources().getColorStateList(R.color.game4, null);
 
             case 8:
                 return getResources().getColorStateList(originalTile ? R.color.legit8 : R.color.game8, null);
-                //return getResources().getColorStateList(R.color.game8, null);
+            //return getResources().getColorStateList(R.color.game8, null);
 
             case 16:
                 return getResources().getColorStateList(originalTile ? R.color.legit16 : R.color.game16, null);
-                //return getResources().getColorStateList(R.color.game16, null);
+            //return getResources().getColorStateList(R.color.game16, null);
 
             case 32:
                 return getResources().getColorStateList(originalTile ? R.color.legit32 : R.color.game32, null);
-                //return getResources().getColorStateList(R.color.game32, null);
+            //return getResources().getColorStateList(R.color.game32, null);
 
             case 64:
                 return getResources().getColorStateList(originalTile ? R.color.legit64 : R.color.game64, null);
-                //return getResources().getColorStateList(R.color.game64, null);
+            //return getResources().getColorStateList(R.color.game64, null);
 
             case 128:
                 return getResources().getColorStateList(originalTile ? R.color.legit128 : R.color.game128, null);
-                //return getResources().getColorStateList(R.color.game128, null);
+            //return getResources().getColorStateList(R.color.game128, null);
 
             case 256:
                 return getResources().getColorStateList(originalTile ? R.color.legit256 : R.color.game256, null);
-                //return getResources().getColorStateList(R.color.game256, null);
+            //return getResources().getColorStateList(R.color.game256, null);
 
             case 512:
                 return getResources().getColorStateList(originalTile ? R.color.legit512 : R.color.game512, null);
-                //return getResources().getColorStateList(R.color.game512, null);
+            //return getResources().getColorStateList(R.color.game512, null);
 
             case 1024:
                 //return getResources().getColorStateList(R.color.game1024, null);
@@ -538,13 +535,13 @@ public class MainGameActivity extends AppCompatActivity {
 
             case 2048:
                 return getResources().getColorStateList(originalTile ? R.color.legit2048 : R.color.game2048, null);
-                //return getResources().getColorStateList(R.color.game2048, null);
+            //return getResources().getColorStateList(R.color.game2048, null);
 
             default:
                 return getResources().getColorStateList(R.color.celesteclaro, null);
         }
 
-       // return getResources().getColorStateList(R.color.pink, null);
+        // return getResources().getColorStateList(R.color.pink, null);
     }
 
     //
@@ -577,13 +574,13 @@ public class MainGameActivity extends AppCompatActivity {
                 .translationX(toX - fromX)
                 .translationY(toY - fromY)
                 .setInterpolator(new android.view.animation.AccelerateDecelerateInterpolator())
-                .setDuration(250)
+                .setDuration(500)
                 .withEndAction(() -> {
                     if (merging) {
                         fakeTile.animate()
-                                .scaleX(0f)
-                                .scaleY(0f)
-                                .setDuration(100)
+                                .scaleX(5f)
+                                .scaleY(5f)
+                                .setDuration(200)
                                 .withEndAction(() -> overlay.removeView(fakeTile))
                                 .start();
                     } else {
@@ -592,7 +589,6 @@ public class MainGameActivity extends AppCompatActivity {
                 })
                 .start();
     }
-
 
 
     private int getTileX(int col) {

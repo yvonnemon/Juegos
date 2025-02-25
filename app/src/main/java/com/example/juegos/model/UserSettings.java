@@ -19,7 +19,6 @@ public class UserSettings {
     @ColumnInfo(name = "single_player")
     public boolean soloPlayer  = false;  // Stores tile value-color pairs
 
-
     @ColumnInfo(name = "text_color")
     public String textColor;
 
@@ -33,8 +32,5 @@ public class UserSettings {
                 ", textColor='" + textColor + '\'' +
                 '}';
     }
-
-//    @ColumnInfo(name = "sound_enabled")
-//    public boolean soundEnabled;
 }
 

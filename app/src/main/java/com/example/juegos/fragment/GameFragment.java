@@ -30,12 +30,7 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.game_fragment, container, false);
-
-
-
-
         return rootView;
-
     }
 
     @Override
@@ -61,7 +56,6 @@ public class GameFragment extends Fragment {
             startActivity(intent);
         });
 
-        //TODO
         ImageButton userInfo = view.findViewById(R.id.userInfo);
 
         userInfo.setOnClickListener(v -> {
@@ -87,12 +81,10 @@ public class GameFragment extends Fragment {
         editor.clear(); // Remove saved user data
         editor.apply();
 
-
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.login_fragment, new LoginFragment()) // Ensure you're replacing the correct fragment container
                 .addToBackStack(null) // Allows going back if needed
                 .commit();
     }
-
 }

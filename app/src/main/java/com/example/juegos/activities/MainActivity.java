@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             if (existingGames.isEmpty()) {  // Only insert if the table is empty
                 Game game1 = new Game();
                 game1.name = "2048";
+                //TODO
                 game1.description = "The objective of the game is to slide numbered tiles on a grid to combine them to create a tile with the number 2048; however, one can continue to" +
                         " play the game after reaching the goal, creating tiles with larger numbers.";
 

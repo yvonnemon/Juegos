@@ -40,20 +40,18 @@ public class SettingsActivity extends AppCompatActivity {
         soloPlayer = findViewById(R.id.soloQ);
         colorBlind = findViewById(R.id.colorBlind);
 
-        if(settings != null){
+        if (settings != null) {
             tiles.setChecked(settings.originalTiles);
             soloPlayer.setChecked(settings.soloPlayer);
             colorBlind.setChecked(settings.colorBlind);
 
         }
 
-
         Button save = findViewById(R.id.saveSettings);
         save.setOnClickListener(v -> {
             saveGameSettings(this);
             Toast.makeText(this, "Settings saved successfully", Toast.LENGTH_SHORT).show();
         });
-
     }
 
     public void saveGameSettings(Context context) {
@@ -63,9 +61,6 @@ public class SettingsActivity extends AppCompatActivity {
             settings.originalTiles = tiles.isChecked();
             settings.soloPlayer = soloPlayer.isChecked();
             settings.colorBlind = colorBlind.isChecked();
-
-           // settings.textColor = textColor;
-
 
             AppDatabase.getInstance(context).gameSettingsDao().insertSettings(settings);
 

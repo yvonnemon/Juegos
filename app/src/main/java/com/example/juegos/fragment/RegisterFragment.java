@@ -32,7 +32,6 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.register_fragment, container, false);
-
         return rootView;
     }
 
@@ -41,7 +40,7 @@ public class RegisterFragment extends Fragment {
 
         Button submit = view.findViewById(R.id.submitButton);
         EditText user = view.findViewById(R.id.username);
-        //String usuario = user.
+
         EditText pass = view.findViewById(R.id.password);
         EditText pass2 = view.findViewById(R.id.password2);
         String text1 = pass.getText().toString();
@@ -51,7 +50,7 @@ public class RegisterFragment extends Fragment {
 
         submit.setOnClickListener(v -> {
 
-            if(!text1.equals(text2)) {
+            if (!text1.equals(text2)) {
 
                 builder.setTitle("Warning")
                         .setMessage("Passwords do not match")
@@ -61,7 +60,7 @@ public class RegisterFragment extends Fragment {
                             }
                         }).show();
             } else {
-                //TODO save
+
                 builder.setTitle("Success!")
                         .setMessage("Successfully Registered")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -80,7 +79,6 @@ public class RegisterFragment extends Fragment {
                                 editor.putString("username", user.getText().toString()); // Save username
                                 editor.apply();
 
-
                                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                                 fragmentManager.beginTransaction()
                                         .replace(R.id.login_fragment, new GameFragment()) // Ensure you're replacing the correct fragment container
@@ -89,18 +87,16 @@ public class RegisterFragment extends Fragment {
                             }
                         }).show();
             }
-
         });
     }
 
-    public void createUser(User user){
+    public void createUser(User user) {
         AppDatabase db = AppDatabase.getInstance(requireContext());
 
         new Thread(() -> {
             usuarioID.set(db.userDao().insertUser(user));
-            //return x;
+
             Log.d("User", "User created");
         }).start();
-
     }
 }

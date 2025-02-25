@@ -21,6 +21,9 @@ import com.example.juegos.model.User;
 import com.example.juegos.model.UserGame;
 import com.example.juegos.repository.AppDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class UserInfoActivity extends AppCompatActivity {
@@ -60,17 +63,19 @@ public class UserInfoActivity extends AppCompatActivity {
 
     private void loadInfo(int action) {
         resetTable();
+
         AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "game_db").allowMainThreadQueries().build();
         SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+
         int id = sharedPreferences.getInt("user_id", -1); // Default to -1 if no user is found
-        String nombre = sharedPreferences.getString("username","undefined");
-        System.out.println("sout?");
+        String nombre = sharedPreferences.getString("username", "undefined");
+
         List<UserGame> users;
 
-        if(action == 1) {
+        if (action == 1) {
             users = db.userGameDao().getFromUserOrderByGamenameDesc(id);
             System.out.println("game");
-        } else if (action == 2){
+        } else if (action == 2) {
             users = db.userGameDao().getFromUserOrderByDateDesc(id);
             System.out.println("date");
         } else { //default sin filtro
@@ -79,14 +84,24 @@ public class UserInfoActivity extends AppCompatActivity {
         }
 
         for (UserGame user : users) {
-            Log.d("Database", "User: " + user.score + ", time: " + user.timestamp + "asd " + user.game_id);
-            boolean raya4 = user.gameName.equals("Line Four");
-            if(raya4) {
-                addTableRow(user.gameName, nombre, user.score == 1 ? "Win" : "Lose",user.timestamp);
-            } else {
-                addTableRow(user.gameName, nombre, String.valueOf(user.score), user.timestamp);
-            }
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+            Date date;
+            try {
+                date = inputFormat.parse(user.timestamp);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            assert date != null;
+            String fecha = outputFormat.format(date);
+            //Log.d("Database", "User: " + user.score + ", time: " + user.timestamp + "asd " + user.game_id);
+            boolean raya4 = user.gameName.equals("Line Four");
+            if (raya4) {
+                addTableRow(user.gameName, nombre, user.score == 1 ? "Win" : "Lose", fecha);
+            } else {
+                addTableRow(user.gameName, nombre, String.valueOf(user.score), fecha);
+            }
         }
         Log.d("Database", "User inserted with ID: " + id);
     }
@@ -142,5 +157,4 @@ public class UserInfoActivity extends AppCompatActivity {
         LinearLayout tableLayout = findViewById(R.id.tableRowsContainer);
         tableLayout.removeAllViews(); // Clears previous rows
     }
-
 }

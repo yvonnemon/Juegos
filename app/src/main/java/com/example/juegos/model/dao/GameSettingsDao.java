@@ -14,9 +14,4 @@ public interface GameSettingsDao {
 
     @Query("SELECT * FROM user_settings LIMIT 1")
     UserSettings getSettings();
-
-
-
-//    @Query("UPDATE game_settings SET sound_enabled = :enabled WHERE gameName = :gameName")
-//    void updateSound(String gameName, boolean enabled);
 }
