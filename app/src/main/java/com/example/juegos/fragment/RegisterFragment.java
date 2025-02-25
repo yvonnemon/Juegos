@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,11 +23,12 @@ import com.example.juegos.R;
 import com.example.juegos.model.User;
 import com.example.juegos.repository.AppDatabase;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class RegisterFragment extends Fragment {
 
-    AtomicLong usuarioID = new AtomicLong();
+    AtomicLong usuarioID = new AtomicLong();;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,31 +63,10 @@ public class RegisterFragment extends Fragment {
                         }).show();
             } else {
 
-                builder.setTitle("Success!")
-                        .setMessage("Successfully Registered")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-
-                                User username = new User();
-                                username.userName = user.getText().toString();
-                                username.password = text1;
-                                createUser(username);
-
-                                //guardar en la sesion
-                                SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putInt("user_id", usuarioID.intValue()); // Save user ID
-                                editor.putString("username", user.getText().toString()); // Save username
-                                editor.apply();
-
-                                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                                fragmentManager.beginTransaction()
-                                        .replace(R.id.login_fragment, new GameFragment()) // Ensure you're replacing the correct fragment container
-                                        .addToBackStack(null) // Allows going back if needed
-                                        .commit();
-                            }
-                        }).show();
+                    User username = new User();
+                    username.userName = user.getText().toString();
+                    username.password = text1;
+                    createUser(username);
             }
         });
     }
@@ -94,9 +75,45 @@ public class RegisterFragment extends Fragment {
         AppDatabase db = AppDatabase.getInstance(requireContext());
 
         new Thread(() -> {
-            usuarioID.set(db.userDao().insertUser(user));
+            User existingUser = db.userDao().getUserByUsername(user.userName); // Check if user exists
 
-            Log.d("User", "User created");
+            if (existingUser != null) {
+                // User already exists, use their existing ID
+                System.out.println("");
+                Log.d("User", "User already exist ");
+                requireActivity().runOnUiThread(() ->
+                        Toast.makeText(requireContext(), "User already exists!", Toast.LENGTH_SHORT).show()
+                );
+
+            } else {
+                // User does not exist, insert and get new ID
+                long newUserId = db.userDao().insertUser(user);
+                usuarioID.set(newUserId);
+                Log.d("User", "New user created with ID: " + newUserId);
+
+                requireActivity().runOnUiThread(() -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                    builder.setTitle("Success!")
+                            .setMessage("Successfully Registered")
+                            .setPositiveButton("Ok", (dialog, which) -> {
+                                dialog.dismiss();
+
+                                // Save session data
+                                SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("user_id", usuarioID.intValue()); // Save user ID
+                                editor.putString("username", user.userName); // Save username
+                                editor.apply();
+
+                                // Replace fragment
+                                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.login_fragment, new GameFragment())
+                                        .addToBackStack(null)
+                                        .commit();
+                            }).show();
+                });
+            }
         }).start();
     }
 }

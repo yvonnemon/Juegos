@@ -159,7 +159,7 @@ public class LineFourActivity extends AppCompatActivity {
         userGame.game_id = 2;
 
         // añadir un ? de info abajo para que si gana el jugador 1 se le guarda el score al usuario logeado
-        userGame.timestamp = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        userGame.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
         userGame.score = player == 1 ? 1 : 0;
         userGame.gameName = "Line Four";
 
