@@ -60,41 +60,20 @@
             android:scaleType="centerCrop"
             android:background="@drawable/otroline4"> <!-- Replace with your image -->
 
-            <!--            <TextView-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:text="2048"-->
-            <!--                android:textSize="20sp"-->
-            <!--                android:textStyle="bold"-->
-            <!--                android:gravity="center"-->
-            <!--                android:textColor="@android:color/black"/>-->
         </FrameLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Hangman Card -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/hanged"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="@color/cian"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintTop_toBottomOf="@+id/linefour"
-        android:layout_marginTop="16dp"
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log out"
+        android:backgroundTint="@color/cian"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Ahorcado"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:textColor="@android:color/white"/>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintVertical_bias="0.142" />
 
     <!-- Settings Button -->
     <ImageButton

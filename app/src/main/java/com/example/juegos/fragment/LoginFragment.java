@@ -43,15 +43,14 @@ public class LoginFragment extends Fragment {
         sessionManager = new SessionManager(requireContext());
 
         login.setOnClickListener(v -> {
-            //TODO login
+
             attemptLogin(username.getText().toString(), password.getText().toString());
 
             //logAllUsers();
-            getgames();
+            //getgames();
         });
         registerButton.setOnClickListener(v -> {
-            //TODO login
-            // Use the activity's FragmentManager to replace the fragment
+
             requireActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.login_fragment, new RegisterFragment())
                     .addToBackStack(null)
@@ -65,19 +64,8 @@ public class LoginFragment extends Fragment {
         new Thread(() -> {
             User user = database.userDao().getUserByUsername(usuario); // Assuming email is used as userId
 
-            if (user == null) {
-                // Register new user in Room Database
-//                user = new User();
-//                user.userId = email;
-//                user.username = username;
-//                database.userDao().insertUser(user);
-                System.out.println("no existe");
+            if (user != null) {
 
-            } else {
-                // Save session & store user globally
-//                sessionManager.saveUserSession(String.valueOf(user.id));
-//                UserSession.getInstance().setUser(user);
-                //TODO
                 SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("user_id", user.id); // Save user ID
@@ -92,6 +80,8 @@ public class LoginFragment extends Fragment {
                             .commit();
                 });
 
+            } else {
+                System.out.println("no existe");
             }
 
         }).start();
@@ -113,17 +103,5 @@ public class LoginFragment extends Fragment {
             }
         }).start();
     }
-    //TODO implementar en todas las pantallas y redirigir al login
-    private void logout() {
-        new Thread(() -> {
-            database.userDao().clearUsers(); // Clear user data in Room DB
-            sessionManager.clearSession(); // Clear SharedPreferences
 
-            /*runOnUiThread(() -> {
-                Toast.makeText(this, "Logged out!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
-            });*/
-        }).start();
-    }
 }

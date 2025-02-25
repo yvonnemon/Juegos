@@ -1,8 +1,12 @@
 package com.example.juegos.activities;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.login_fragment, new LoginFragment())  // Load default fragment
                     .commit();
         }
+
         insertDefaultGames(this);
+
     }
 
     public void insertDefaultGames(Context context) {
@@ -44,15 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
                 Game game2 = new Game();
                 game2.name = "Line Four";
-                game2.description = "Is a game in which the players choose a color and then take turns dropping colored tokens into a six-row, seven-column vertically suspended grid. The pieces fall straight down, occupying the lowest available space within the column. The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one's own tokens.";
-
-                Game game3 = new Game();
-                game3.name = "Hangedman";
-                game3.description = "todo";
+                game2.description = "Is a game in which the players choose a color and then take turns dropping colored tokens into a six-row, seven-column vertically suspended grid. " +
+                        "The pieces fall straight down, occupying the lowest available space within the column. The objective of the game is to be the first to form a horizontal, vertical," +
+                        " or diagonal line of four of one's own tokens.";
 
                 db.gameDao().inserGame(game1);
                 db.gameDao().inserGame(game2);
-                db.gameDao().inserGame(game3);
 
                 Log.d("Database", "Default games inserted.");
             } else {
@@ -60,5 +63,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
     }
+
 
 }

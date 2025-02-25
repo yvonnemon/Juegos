@@ -18,7 +18,7 @@ import com.example.juegos.model.dao.GameSettingsDao;
 import com.example.juegos.model.dao.UserDao;
 import com.example.juegos.model.dao.UserGameDao;
 
-@Database(entities = {User.class, Game.class, UserGame.class, UserSettings.class}, version = 10)
+@Database(entities = {User.class, Game.class, UserGame.class, UserSettings.class}, version = 11)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase INSTANCE;

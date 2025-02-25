@@ -23,4 +23,11 @@ public interface UserGameDao {
     @Query("SELECT MAX(score) FROM User_Game")
     int getHighestOverallScore();
 
+    @Query("SELECT * FROM User_Game WHERE user_id = :playerId ORDER BY gameName DESC")
+    List<UserGame> getFromUserOrderByGamenameDesc(int playerId);
+
+    @Query("SELECT * FROM User_Game WHERE user_id = :playerId ORDER BY timestamp DESC")
+    List<UserGame> getFromUserOrderByDateDesc(int playerId);
+
+
 }

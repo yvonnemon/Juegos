@@ -40,9 +40,12 @@ public class SettingsActivity extends AppCompatActivity {
         soloPlayer = findViewById(R.id.soloQ);
         colorBlind = findViewById(R.id.colorBlind);
 
-        tiles.setChecked(settings.originalTiles);
-        soloPlayer.setChecked(settings.soloPlayer);
-        colorBlind.setChecked(settings.colorBlind);
+        if(settings != null){
+            tiles.setChecked(settings.originalTiles);
+            soloPlayer.setChecked(settings.soloPlayer);
+            colorBlind.setChecked(settings.colorBlind);
+
+        }
 
 
         Button save = findViewById(R.id.saveSettings);

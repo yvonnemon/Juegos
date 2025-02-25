@@ -15,24 +15,36 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        android:backgroundTint="@color/evoker"/>
+        android:backgroundTint="@color/evoker">
+        <TextView
+            android:id="@+id/toolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
+    </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/login_fragment"
         android:layout_width="374dp"
-        android:layout_height="560dp"
+        android:layout_height="500dp"
         android:layout_marginTop="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar2"
-        app:layout_constraintVertical_bias="0.526"/>
+        app:layout_constraintVertical_bias="0.373" />
 
     <TextView
         android:id="@+id/textView6"
@@ -44,6 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
